@@ -33,7 +33,7 @@ creating a new configuration, I'd recommend using a different, more fully featur
 
 
 ##### Remove a user:
-`./getqrcode.sh [identifier]` i.e. `./getqrcode.sh my-phone`
+`./remove-user.sh [identifier]` i.e. `./remove-user.sh my-phone`
 ![alt text](https://raw.githubusercontent.com/hgibs/simple-wireguard-admin/master/screenshots/remove-user.png "remove-user.sh")
 
 Thats it! Lightweight and easy to use. Give me a star if you used this, if you want too!
