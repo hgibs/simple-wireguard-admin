@@ -13,7 +13,7 @@ sudo apt install -y qrencode
 ```
 3) Edit the `config.cfg` file to match your set up.
 4) Review all the scripts and ensure they don't do anything bad! You should never run scripts you find on the internet willy-nilly, 
-especially ones you run as root. `cat *`
+especially ones you run as root. i.e. `cat *`
 
 #### Notes:
 - Please have `SaveConfig = true` enabled in your wg0.conf
