@@ -25,16 +25,16 @@ creating a new configuration, I'd recommend using a different, more fully featur
 ### How to use:
 ##### Add a new user:
 `./create-key.sh [identifier]` i.e. `./create-key.sh my-phone`
-![alt text](https://github.com/hgibs/simple-wireguard-admin/screenshots/create-user.png "create-key.sh")
+![alt text](https://raw.githubusercontent.com/hgibs/simple-wireguard-admin/master/screenshots/create-user.png "create-key.sh")
 
 ##### Get a qr code of a pre-created user:
 `./getqrcode.sh [identifier]` i.e. `./getqrcode.sh my-phone`
-![alt text](https://github.com/hgibs/simple-wireguard-admin/screenshots/getqrcode.png "getqrcode.sh")
+![alt text](https://raw.githubusercontent.com/hgibs/simple-wireguard-admin/master/screenshots/getqrcode.png "getqrcode.sh")
 
 
 ##### Remove a user:
 `./getqrcode.sh [identifier]` i.e. `./getqrcode.sh my-phone`
-![alt text](https://github.com/hgibs/simple-wireguard-admin/screenshots/getqrcode.png "remove-user.sh")
+![alt text](https://raw.githubusercontent.com/hgibs/simple-wireguard-admin/master/screenshots/remove-user.png "remove-user.sh")
 
 Thats it! Lightweight and easy to use. Give me a star if you used this, if you want too!
 
