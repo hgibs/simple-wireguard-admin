@@ -1,30 +1,65 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-v4shiftoctet=0
+. config.cfg
+
+if [ "$EUID" -ne 0 ] ;
+then 
+    echo "wg requires root privileges"
+    exit 1
+fi
 
 if ! [ -z "$1" ] ;
 then
-  v4="$(cat ipv4.next)"
-  v6="$(cat ipv6.next)"
-
- # wg-quick down wg0
-  wg genkey | tee "${1}-privatekey" | wg pubkey > "$1-publickey"
-  echo "wg genkey | tee ${1}-privatekey | wg pubkey > $1-publickey"
-  #wg-quick up wg0
-  wg set wg0 peer "$(cat ${1}-publickey)" allowed-ips "10.99.$v4shiftoctet.$v4/32,fd99:feed::$v6/128"
-  echo "wg set wg0 peer $(cat ${1}-publickey) allowed-ips 10.99.$v4shiftoctet.$v4/32,fd99:feed::$v6/128"
-
-  v4next="$(($v4 + 1))"
-  v6next="$(($v6 + 1))"
-  echo "Next v4 address: 10.99.$v4shiftoctet.$v4next"
-  echo "Next v6 address: fd99:feed::$v6next"
-
-  echo "$v4next" > ipv4.next
-  echo "$v6next" > ipv6.next
-
-  #generate conf file
+  newprivkey="${wgconfig}${1}-privatekey"
+  if [ -f "$newprivkey" ]; then
+    echo "$newprivkey exists, try a new identifier"
+    exit 1
+  fi
+  
+  newpubkey="${wgconfig}${1}-publickey"
+  if [ -f "$newpubkey" ]; then
+    echo "$newpubkey exists, try a new identifier"
+    exit 1
+  fi
+  
   newconf="${1}.conf"
-  echo $newconf
+  if [ -f "$newconf" ]; then
+    echo "$newconf exists, try a new identifier"
+    exit 1
+  fi
+  
+  if [ "$latestclient4" -ge 254 ] ;
+  then
+    #increment the v4thirdoctet
+    latestclient4=0
+    v4thirdoctet="$(($v4thirdoctet + 1))"
+    #save these to the config file
+    sed -i.bak "s/v4thirdoctet=.*/v4thirdoctet=${v4thirdoctet} #automatically incremented/" config.cfg
+  fi
+  
+  if [ "$latestclient6" -ge 9999 ] ;
+  then
+    #haven't done the math to do more yet
+    echo "This script has hit its limit of available IPs to assign"
+    echo "Please consider using a more fully featured wireguard manager"
+    exit 1
+  fi
+  
+  latestclient4="$(($latestclient4 + 1))"
+  latestclient6="$(($latestclient6 + 1))"
+  
+  echo "Client assigned v4 address: ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}"
+  echo "Client assigned v6 address: ${ipv6_prefix}:${latestclient6}"
+  
+  wg genkey | tee "$newprivkey" | wg pubkey > "$newpubkey"
+  echo "wg genkey | tee $newprivkey | wg pubkey > $newpubkey"
+
+  wg set wg0 peer "$(cat $newpubkey)" allowed-ips "${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
+  echo "wg set wg0 peer $(cat $newpubkey) ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
+
+  sed -i.bak "s/latestclient4=.*/latestclient4=${latestclient4} #automatically incremented/" config.cfg
+  sed -i.bak "s/latestclient6=.*/latestclient6=${latestclient6} #automatically incremented/" config.cfg
+
   #Address = 10.0.99.${v4}/32, fd99:feed::${v6}/128, 192.168.0.0/16, 2001:470:b962:ace::/64
   printf "#${newconf} created on $(date) \n
 [Interface]
@@ -36,8 +71,11 @@ Endpoint = vpn.hollandgibson.com:51820
 AllowedIPs = 0.0.0.0/0, ::/0
 \n
 " > $newconf
-  qrencode -t ansiutf8 < "/etc/wireguard/$newconf"
+  qrencode -t ansiutf8 < "${newconf}"
+  echo "Created: $newconf for transfer to client"
+  chmod 776 $newconf #so that the user can delete it.
 else
   echo "Please supply a key name!"
+  echo "Usage ./create-key.sh [identifier]"
 fi
 
