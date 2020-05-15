@@ -77,7 +77,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
   echo "Created: $newconf for transfer to client"
 
   rm -f $newprivkey
-  chmod 776 $newconf #so that the user can delete it.
+  chmod 660 $newconf #this contains private key, better keep it private
   printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely, \n\
 then erase it. You can remove this user by running the command ./remove-user.sh $1 \n"
 else
