@@ -17,7 +17,7 @@ especially ones you run as root. i.e. `cat *`
 
 #### Notes:
 - Please have `SaveConfig = true` enabled in your wg0.conf
-- This assumes your instance is running \*nix.
+- This assumes your instance is running \*nix (including MacOS).
 - This does not re-use IP addresses after they are removed, if you plan on adding more than 9999 clients before resetting and
 creating a new configuration, I'd recommend using a different, more fully featured set up.
 - You're required to use IPv4 and IPv6 addresses on your routed VPN, get with the times!
