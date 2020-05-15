@@ -66,7 +66,7 @@ then
   printf "#${newconf} created on $(date) \n
 [Interface]
 PrivateKey = $(cat $newprivkey)
-Address = 10.99.$v4shiftoctet.${v4}/16, fd99:feed::${v6}/64 \n
+Address = ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/${v4cidr},${ipv6_prefix}:${latestclient6}/${v6cidr} \n
 [Peer]
 PublicKey = $(cat $newpubkey)
 Endpoint = $endpoint
