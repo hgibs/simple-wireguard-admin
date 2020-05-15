@@ -54,8 +54,8 @@ then
   wg genkey | tee "$newprivkey" | wg pubkey > "$newpubkey"
   echo "wg genkey | tee $newprivkey | wg pubkey > $newpubkey"
 
-  wg set wg0 peer "$(cat $newpubkey)" allowed-ips "${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
-  echo "wg set wg0 peer $(cat $newpubkey) ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
+  wg set "$wgn" peer "$(cat $newpubkey)" allowed-ips "${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
+  echo "wg set $wgn peer $(cat $newpubkey) ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32,${ipv6_prefix}:${latestclient6}/128"
 
   sed -i.bak "s/latestclient4=.*/latestclient4=${latestclient4} #automatically incremented/" config.cfg
   sed -i.bak "s/latestclient6=.*/latestclient6=${latestclient6} #automatically incremented/" config.cfg
@@ -67,13 +67,15 @@ PrivateKey = $(cat ${1}-privatekey)
 Address = 10.99.$v4shiftoctet.${v4}/16, fd99:feed::${v6}/64 \n
 [Peer]
 PublicKey = $(cat ${1}-publickey)
-Endpoint = vpn.hollandgibson.com:51820
+Endpoint = $endpoint
 AllowedIPs = 0.0.0.0/0, ::/0
 \n
 " > $newconf
   qrencode -t ansiutf8 < "${newconf}"
   echo "Created: $newconf for transfer to client"
   chmod 776 $newconf #so that the user can delete it.
+  printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely, \n \
+then erase it. You can remove this user by running the command ./remove-user.sh $1 \n"
 else
   echo "Please supply a key name!"
   echo "Usage ./create-key.sh [identifier]"
