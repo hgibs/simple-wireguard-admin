@@ -1,4 +1,5 @@
 config.cfg
+.config.cfg.swp
 .conf
 *.bak
 *.conf

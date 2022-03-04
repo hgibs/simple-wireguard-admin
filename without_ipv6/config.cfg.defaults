@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#location of wireguard main config folder
+wgconfig="/etc/wireguard/" #note the trailing '/'
+
+#what interface is this on?
+wgn="wg0"
+
+#what is the publicly routable address and port?
+#example vpn.example.com:51820
+#example2  203.0.113.43:46801
+endpoint=vpn.example.com:51820
+
+#ip addresses are as follows
+# {v4firstoctet}.{v4secondoctet}.{v4thirdoctet}.{latestclient4}/{v4cidr}
+#so 10.99.0.0/16 (with 10.99.0.1 as the server's address)
+v4firstoctet=10
+v4secondoctet=99
+v4thirdoctet=0 #automatically incremented
+latestclient4=2
+v4cidr=16
+
+#ipv6 addresses are simpler:
+# {ipv6_prefix}:{latestclient6}/{v6cidr}
+# so fd99:beef:f00d:0000:0000:0000:0000:0000/64 aka fd99:beef::/64 (with fd99:beef::1 as the server's address)
+ipv6_prefix="fd99:beef:f00d:" # don't forget the trailing ':' if you are compressing 0's, as we are
+latestclient6=2
+v6cidr=64
