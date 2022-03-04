@@ -47,7 +47,7 @@ then
   echo "wg genkey | tee $newprivkey | wg pubkey > $newpubkey"
 
   wg set "$wgn" peer "$(cat $newpubkey)" allowed-ips "${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32"
-  echo "wg set $wgn peer $(cat $newpubkey) ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32"
+  echo "wg set $wgn peer $(cat $newpubkey) allowed-ips ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/32"
 
   sed -i "s/latestclient4=.*/latestclient4=${latestclient4} #automatically incremented/" config.cfg
 
