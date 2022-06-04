@@ -1,5 +1,5 @@
 # simple-wireguard-admin
-A collection of a few scripts for easily managing wireguard from the command line. Just run these scripts to add/remove users to your 
+A collection of a few scripts for easily managing wireguard from the command line. Just run these scripts to add/remove users to your
 existing wireguard set up.
 
 ### How to install:
@@ -12,7 +12,7 @@ cp config.cfg.defaults config.cfg
 sudo apt install -y qrencode
 ```
 3) Edit the `config.cfg` file to match your set up.
-4) Review all the scripts and ensure they don't do anything bad! You should never run scripts you find on the internet willy-nilly, 
+4) Review all the scripts and ensure they don't do anything bad! You should never run scripts you find on the internet willy-nilly,
 especially ones you run as root. i.e. `cat *`
 
 #### Notes:
@@ -36,5 +36,4 @@ creating a new configuration, I'd recommend using a different, more fully featur
 `./remove-user.sh [identifier]` i.e. `./remove-user.sh my-phone`
 ![alt text](https://raw.githubusercontent.com/hgibs/simple-wireguard-admin/master/screenshots/remove-user.png "remove-user.sh")
 
-Thats it! Lightweight and easy to use. Give me a star if you used this, if you want too!
-
+Thats it! Lightweight and easy to use. Give me a star if you used this, if you want to!
