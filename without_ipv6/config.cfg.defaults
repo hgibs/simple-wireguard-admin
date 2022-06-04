@@ -12,9 +12,9 @@ endpoint=vpn.example.com:51820
 
 #ip addresses are as follows
 # {v4firstoctet}.{v4secondoctet}.{v4thirdoctet}.{latestclient4}/{v4cidr}
-#so 10.99.0.0/16 (with 10.99.0.1 as the server's address)
-v4firstoctet=10
-v4secondoctet=99
+#so 172.16.0.0/16 (with 172.16.0.1 as the server's address)
+v4firstoctet=172
+v4secondoctet=16
 v4thirdoctet=0 #automatically incremented
 latestclient4=1 #automatically incremented
 v4cidr=16
