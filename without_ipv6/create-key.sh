@@ -2,8 +2,10 @@
 
 . config.cfg
 
+serv_pubkey=$(wg show wg0 | head -n 4 | grep "public key" | cut -d' ' -f5)
+
 if [ "$EUID" -ne 0 ] ;
-then 
+then
     echo "wg requires root privileges"
     exit 1
 fi
@@ -15,13 +17,13 @@ then
     echo "$newprivkey exists, try a new identifier"
     exit 1
   fi
-  
+
   newpubkey="${wgconfig}${1}-publickey"
   if [ -f "$newpubkey" ]; then
     echo "$newpubkey exists, try a new identifier"
     exit 1
   fi
-  
+
   newconf="${1}.conf"
   if [ -f "$newconf" ]; then
     echo "$newconf exists, try a new identifier"
@@ -29,7 +31,7 @@ then
   fi
 
   cat config.cfg > config.cfg.bak
-  
+
   if [ "$latestclient4" -ge 254 ] ;
   then
     #increment the v4thirdoctet
@@ -38,11 +40,11 @@ then
     #save these to the config file
     sed -i "s/v4thirdoctet=.*/v4thirdoctet=${v4thirdoctet} #automatically incremented/" config.cfg
   fi
-  
+
   latestclient4="$(($latestclient4 + 1))"
-  
+
   echo "Client assigned v4 address: ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}"
-  
+
   wg genkey | tee "$newprivkey" | wg pubkey > "$newpubkey"
   echo "wg genkey | tee $newprivkey | wg pubkey > $newpubkey"
 
@@ -55,9 +57,10 @@ then
   printf "#${newconf} created on $(date) \n
 [Interface]
 PrivateKey = $(cat $newprivkey)
-Address = ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/${v4cidr} \n
+Address = ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/${v4cidr}
+DNS = 1.1.1.1, 1.0.0.1 \n
 [Peer]
-PublicKey = $(cat $newpubkey)
+PublicKey = $(cat $serv_pubkey)
 Endpoint = $endpoint
 AllowedIPs = 0.0.0.0/0
 \n
@@ -67,10 +70,9 @@ AllowedIPs = 0.0.0.0/0
 
   rm -f $newprivkey
   chmod 660 $newconf #this contains private key, better keep it private
-  printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely, \n\
-then erase it. You can remove this user by running the command ./remove-user.sh $1 \n"
+  printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely. \n\
+You can remove this user by running the command ./remove-user.sh $1 \n"
 else
   echo "Please supply a key name!"
   echo "Usage ./create-key.sh [identifier]"
 fi
-
