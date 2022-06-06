@@ -2,7 +2,7 @@
 
 . config.cfg
 
-serv_pubkey=$(wg show wg0 | head -n 4 | grep "public key" | cut -d' ' -f5)
+serv_pubkey=$(wg show $wgn | head -n 4 | grep "public key" | cut -d' ' -f5)
 
 if [ "$EUID" -ne 0 ] ;
 then

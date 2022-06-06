@@ -20,7 +20,6 @@ especially ones you run as root. i.e. `cat *`
 - This assumes your instance is running \*nix (including MacOS).
 - This does not re-use IP addresses after they are removed, if you plan on adding more than 9999 clients before resetting and
 creating a new configuration, I'd recommend using a different, more fully featured set up.
-- You're required to use interface `wg0`
 
 ### How to use:
 ##### Add a new user:
