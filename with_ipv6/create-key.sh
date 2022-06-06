@@ -71,7 +71,7 @@ PrivateKey = $(cat $newprivkey)
 Address = ${v4firstoctet}.${v4secondoctet}.${v4thirdoctet}.${latestclient4}/${v4cidr},${ipv6_prefix}:${latestclient6}/${v6cidr}
 DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001 \n
 [Peer]
-PublicKey = $(cat $serv_pubkey)
+PublicKey = $serv_pubkey
 Endpoint = $endpoint
 AllowedIPs = 0.0.0.0/0, ::/0
 \n
