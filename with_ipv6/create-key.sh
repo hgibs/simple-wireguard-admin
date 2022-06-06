@@ -81,7 +81,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 
   rm -f $newprivkey
   chmod 660 $newconf #this contains private key, better keep it private
-  printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely. \n\
+  printf "Take care of this configuration file - it contains the private key of the client. Transfer it securely, then erase it here. \n\
 You can remove this user by running the command ./remove-user.sh $1 \n"
 else
   echo "Please supply a key name!"
